@@ -36,6 +36,7 @@ public class SecurityConfig {
                             response.setStatus(HttpStatus.FORBIDDEN.value());
                         }))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.POST,"/v1/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/v1/auth/register").permitAll()
                         .anyRequest().authenticated()
