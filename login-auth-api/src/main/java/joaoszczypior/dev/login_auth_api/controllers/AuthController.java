@@ -4,6 +4,7 @@ import joaoszczypior.dev.login_auth_api.domain.user.User;
 import joaoszczypior.dev.login_auth_api.dto.LoginRequestDto;
 import joaoszczypior.dev.login_auth_api.dto.RegisterRequestDto;
 import joaoszczypior.dev.login_auth_api.dto.ResponseDto;
+import joaoszczypior.dev.login_auth_api.infra.exceptions.InvalidCredentialsException;
 import joaoszczypior.dev.login_auth_api.infra.security.TokenService;
 import joaoszczypior.dev.login_auth_api.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class AuthController {
     @PostMapping(value = "/login")
     public ResponseEntity login (@RequestBody LoginRequestDto dto) {
         User user = this.userRepository.findByEmail(dto.email())
-                .orElseThrow(() -> new RuntimeException("User Not Found"));
+                .orElseThrow(() -> new InvalidCredentialsException("Credencias inválidas!"));
 
         if(passwordEncoder.matches(dto.password(), user.getPassword())) {
             String token = this.tokenService.generateToken(user);
